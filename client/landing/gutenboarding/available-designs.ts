@@ -152,6 +152,7 @@ const availableDesigns: Readonly< AvailableDesigns > = {
 				base: 'Open Sans',
 			},
 			categories: [ 'featured', 'business' ],
+			is_premium: false,
 		},
 		{
 			title: 'Twenty Twenty',
@@ -164,6 +165,20 @@ const availableDesigns: Readonly< AvailableDesigns > = {
 				base: 'Open Sans',
 			},
 			categories: [ 'featured', 'portfolio' ],
+			is_premium: false,
+		},
+		{
+			title: 'Alves',
+			slug: 'alves',
+			template: 'alves',
+			theme: 'alves',
+			src: 'https://public-api.wordpress.com/rest/v1/template/demo/alves/alves/',
+			fonts: {
+				headings: 'Lora',
+				base: 'Karla',
+			},
+			categories: [ 'featured', 'non-profit', 'charity' ],
+			is_premium: false,
 		},
 	],
 };
