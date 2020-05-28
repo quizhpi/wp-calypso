@@ -153,6 +153,7 @@ const availableDesigns: Readonly< AvailableDesigns > = {
 			},
 			categories: [ 'featured', 'business' ],
 			is_premium: false,
+			is_edge: true,
 		},
 		{
 			title: 'Twenty Twenty',
@@ -166,6 +167,7 @@ const availableDesigns: Readonly< AvailableDesigns > = {
 			},
 			categories: [ 'featured', 'portfolio' ],
 			is_premium: false,
+			is_edge: true,
 		},
 		{
 			title: 'Alves',
@@ -179,6 +181,7 @@ const availableDesigns: Readonly< AvailableDesigns > = {
 			},
 			categories: [ 'featured', 'non-profit', 'charity' ],
 			is_premium: false,
+			is_edge: true,
 		},
 		{
 			title: 'Mayland',
@@ -192,6 +195,7 @@ const availableDesigns: Readonly< AvailableDesigns > = {
 			},
 			categories: [ 'featured', 'portfolio' ],
 			is_premium: false,
+			is_edge: true,
 		},
 		{
 			title: 'Rivington',
@@ -205,6 +209,7 @@ const availableDesigns: Readonly< AvailableDesigns > = {
 			},
 			categories: [ 'featured', 'real estate listing' ],
 			is_premium: false,
+			is_edge: true,
 		},
 		{
 			title: 'Maywood',
@@ -218,6 +223,7 @@ const availableDesigns: Readonly< AvailableDesigns > = {
 			},
 			categories: [ 'featured', 'restaurant, small business' ],
 			is_premium: false,
+			is_edge: true,
 		},
 		{
 			title: 'Balasana',
@@ -231,6 +237,7 @@ const availableDesigns: Readonly< AvailableDesigns > = {
 			},
 			categories: [ 'featured', 'restaurant, small business' ],
 			is_premium: false,
+			is_edge: true,
 		},
 		{
 			title: 'Stratford',
@@ -244,6 +251,7 @@ const availableDesigns: Readonly< AvailableDesigns > = {
 			},
 			categories: [ 'featured', 'school' ],
 			is_premium: false,
+			is_edge: true,
 		},
 		{
 			title: 'Rockfield',
@@ -257,6 +265,7 @@ const availableDesigns: Readonly< AvailableDesigns > = {
 			},
 			categories: [ 'featured', 'restaurant', 'small business' ],
 			is_premium: false,
+			is_edge: true,
 		},
 		{
 			title: 'Coutoire',
@@ -270,6 +279,7 @@ const availableDesigns: Readonly< AvailableDesigns > = {
 			},
 			categories: [ 'featured', 'portfolio' ],
 			is_premium: false,
+			is_edge: true,
 		},
 		{
 			title: 'Leven',
@@ -283,6 +293,7 @@ const availableDesigns: Readonly< AvailableDesigns > = {
 			},
 			categories: [ 'featured', 'portfolio', 'small business' ],
 			is_premium: false,
+			is_edge: true,
 		},
 		{
 			title: 'Gibbs',
@@ -296,11 +307,23 @@ const availableDesigns: Readonly< AvailableDesigns > = {
 			},
 			categories: [ 'featured', 'restaurant', 'small business' ],
 			is_premium: false,
+			is_edge: true,
 		},
 	],
 };
 
-export default availableDesigns;
+export function getAvailableDesigns(
+	includeEdgeDesigns: boolean = isEnabled( 'gutenboarding/edge-templates' )
+) {
+	if ( includeEdgeDesigns ) {
+		return availableDesigns.featured;
+	}
+
+	return availableDesigns.featured.filter( ( design ) => ! design.is_edge );
+}
+
+export default getAvailableDesigns();
+
 interface AvailableDesigns {
 	featured: Design[];
 }
@@ -327,7 +350,9 @@ export const getDesignImageUrl = ( design: Design ) => {
  */
 export function prefetchDesignThumbs() {
 	if ( typeof window !== 'undefined' ) {
-		availableDesigns.featured.forEach( ( design: Design ) => {
+		if ( ! isEnabled( 'gutenboarding/edge-templates' ) ) {
+		}
+		getAvailableDesigns().forEach( ( design: Design ) => {
 			const href = getDesignImageUrl( design );
 			const link = document.createElement( 'link' );
 			link.rel = 'prefetch';
