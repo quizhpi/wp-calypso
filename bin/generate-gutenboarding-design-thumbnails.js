@@ -39,7 +39,7 @@ const getDesignUrl = ( design ) => {
 
 async function run() {
 	await Promise.all(
-		designs.featured.map( async ( design ) => {
+		designs.map( async ( design ) => {
 			const url = getDesignUrl( design );
 			const file = `${ screenshotsPath }/${ design.slug }_${ design.template }_${ design.theme }.jpg`;
 

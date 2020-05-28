@@ -55,7 +55,7 @@ const DesignSelector: React.FunctionComponent = () => {
 			</div>
 			<div className="design-selector__design-grid">
 				<div className="design-selector__grid">
-					{ designs.featured.map( ( design ) => (
+					{ designs.map( ( design ) => (
 						<button
 							key={ design.slug }
 							className="design-selector__design-option"
