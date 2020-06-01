@@ -262,6 +262,7 @@ const RecurringPaymentsPlanAddEditModal = ( {
 					<FormSelect id="renewal_schedule" value={ editedSchedule } onChange={ onSelectSchedule }>
 						<option value="1 month">{ translate( 'Monthly' ) }</option>
 						<option value="1 year">{ translate( 'Yearly' ) }</option>
+						<option value="one-time">{ translate( 'One Time Purchase' ) }</option>
 					</FormSelect>
 				</FormFieldset>
 				<FormFieldset>
