@@ -33,4 +33,6 @@
 }
 
 /** Notices close button **/
-.wp-block-premium-content-container .components-notice-list .components-notice__content { margin: 0; }
+.wp-block-premium-content-container .components-notice-list .components-notice__content {
+	margin: 0;
+}
