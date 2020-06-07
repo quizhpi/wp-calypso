@@ -10,7 +10,10 @@ import {
 	cleanUrl,
 	getRoleFromScope,
 	parseAuthorizationQuery,
+	redirect,
 } from '../utils';
+
+import { JPC_PATH_PLANS, JPC_PATH_REMOTE_INSTALL, REMOTE_PATH_AUTH } from '../constants';
 
 jest.mock( 'config', () => ( input ) => {
 	const lookupTable = {
@@ -130,5 +133,28 @@ describe( 'parseAuthorizationQuery', () => {
 
 	test( 'should return null data on valid input', () => {
 		expect( parseAuthorizationQuery( {} ) ).toBeNull();
+	} );
+} );
+
+describe( 'redirect', () => {
+	test( 'should fire redirect', () => {
+		const results = [
+			{ type: 'plans_selection', url: 'example.com', expected: JPC_PATH_PLANS + '/example.com' },
+			{ type: 'remote_install', url: 'example.com', expected: JPC_PATH_REMOTE_INSTALL },
+			{
+				type: 'install_instructions',
+				url: 'example.com',
+				expected: '/jetpack/connect/instructions?url=example.com',
+			},
+			{
+				type: 'remote_auth',
+				url: 'example.com',
+				expected: decodeURI( addCalypsoEnvQueryArg( 'example.com' + REMOTE_PATH_AUTH ) ),
+			},
+		];
+
+		results.forEach( ( { type, url, expected } ) =>
+			expect( redirect( type, url ) ).toBe( expected )
+		);
 	} );
 } );

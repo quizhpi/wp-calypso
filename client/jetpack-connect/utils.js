@@ -6,11 +6,14 @@ import makeJsonSchemaParser from 'lib/make-json-schema-parser';
 import PropTypes from 'prop-types';
 import { authorizeQueryDataSchema } from './schema';
 import { head, includes, isEmpty, split } from 'lodash';
+import page from 'page';
+import { urlToSlug } from 'lib/url';
 
 /**
  * Internal dependencies
  */
-import { addQueryArgs, untrailingslashit } from 'lib/route';
+import { addQueryArgs, externalRedirect, untrailingslashit } from 'lib/route';
+import { JPC_PATH_PLANS, JPC_PATH_REMOTE_INSTALL, REMOTE_PATH_AUTH } from './constants';
 
 export function authQueryTransformer( queryObject ) {
 	return {
@@ -123,4 +126,30 @@ export function parseAuthorizationQuery( query ) {
 		// The parser is expected to throw SchemaError or TransformerError on bad input.
 	}
 	return null;
+}
+
+export function redirect( type, url ) {
+	let urlRedirect = '';
+
+	if ( type === 'plans_selection' ) {
+		urlRedirect = JPC_PATH_PLANS + '/' + urlToSlug( url );
+		page.redirect( urlRedirect );
+	}
+
+	if ( type === 'remote_install' ) {
+		urlRedirect = JPC_PATH_REMOTE_INSTALL;
+		page.redirect( urlRedirect );
+	}
+
+	if ( type === 'remote_auth' ) {
+		urlRedirect = addCalypsoEnvQueryArg( url + REMOTE_PATH_AUTH );
+		externalRedirect( urlRedirect );
+	}
+
+	if ( type === 'install_instructions' ) {
+		urlRedirect = addQueryArgs( { url: url }, '/jetpack/connect/instructions' );
+		page.redirect( urlRedirect );
+	}
+
+	return urlRedirect;
 }
