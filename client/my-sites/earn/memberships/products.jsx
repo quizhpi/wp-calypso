@@ -67,12 +67,12 @@ class MembershipsProductsSection extends Component {
 			<div>
 				<QueryMembershipProducts siteId={ this.props.siteId } />
 				<HeaderCake backHref={ '/earn/payments/' + this.props.siteSlug }>
-					{ this.props.translate( 'Products' ) }
+					{ this.props.translate( 'Payment plans' ) }
 				</HeaderCake>
 
 				<SectionHeader>
 					<Button primary compact onClick={ () => this.openAddEditDialog( null ) }>
-						{ this.props.translate( 'Add a new product' ) }
+						{ this.props.translate( 'Add a new payment plan' ) }
 					</Button>
 				</SectionHeader>
 				{ this.props.products.map( ( product ) => (

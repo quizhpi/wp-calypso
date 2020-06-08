@@ -189,7 +189,7 @@ const RecurringPaymentsPlanAddEditModal = ( {
 					welcome_email_content: editedCustomConfirmationMessage,
 					subscribe_as_site_subscriber: editedPostsEmail,
 				},
-				translate( 'Added "%s" product.', { args: editedProductName } )
+				translate( 'Added "%s" payment plan.', { args: editedProductName } )
 			);
 		} else if ( reason === 'submit' && product ) {
 			updateProduct(
@@ -205,7 +205,7 @@ const RecurringPaymentsPlanAddEditModal = ( {
 					welcome_email_content: editedCustomConfirmationMessage,
 					subscribe_as_site_subscriber: editedPostsEmail,
 				},
-				translate( 'Updated "%s" product.', { args: editedProductName } )
+				translate( 'Updated "%s" payment plan.', { args: editedProductName } )
 			);
 		}
 		closeDialog();
@@ -216,9 +216,9 @@ const RecurringPaymentsPlanAddEditModal = ( {
 			<>
 				<p>
 					{ product
-						? translate( 'Edit your existing Product.' )
+						? translate( 'Edit your existing payment plan.' )
 						: translate(
-								'Each amount you add will create a separate product. You can create many of them.'
+								'Each amount you add will create a separate payment plan. You can create many of them.'
 						  ) }
 				</p>
 				<FormFieldset>
@@ -226,7 +226,7 @@ const RecurringPaymentsPlanAddEditModal = ( {
 					{ product && (
 						<Notice
 							text={ translate(
-								'Updating the price will not affect existing recurring subscribers, who will pay what they were originally charged.'
+								'Updating the price will not affect existing recurring subscribers, who will pay what they were originally charged. Existing subscribers will pay the price they were originally charged when they renew'
 							) }
 							showDismiss={ false }
 						/>
@@ -257,7 +257,7 @@ const RecurringPaymentsPlanAddEditModal = ( {
 				</FormFieldset>
 				<FormFieldset>
 					<FormLabel htmlFor="renewal_schedule">
-						{ translate( 'Select renewal schedule' ) }
+						{ translate( 'Select renewal frequency' ) }
 					</FormLabel>
 					<FormSelect id="renewal_schedule" value={ editedSchedule } onChange={ onSelectSchedule }>
 						<option value="1 month">{ translate( 'Renew Monthly' ) }</option>
@@ -266,9 +266,12 @@ const RecurringPaymentsPlanAddEditModal = ( {
 					</FormSelect>
 				</FormFieldset>
 				<FormFieldset>
-					<FormLabel htmlFor="title">{ translate( 'Please describe your product' ) }</FormLabel>
+					<FormLabel htmlFor="title">
+						{ translate( 'Please describe your payment plan' ) }
+					</FormLabel>
 					<FormTextInput
 						id="title"
+						placeholder={ translate( 'Example: Cats are Awesome T-shirt' ) }
 						value={ editedProductName }
 						onChange={ onNameChange }
 						onBlur={ () => setFocusedName( true ) }
@@ -355,9 +358,7 @@ const RecurringPaymentsPlanAddEditModal = ( {
 			] }
 		>
 			<FormSectionHeading>
-				{ product
-					? translate( 'Edit a product' )
-					: translate( 'Add a new product or a subscription' ) }
+				{ product ? translate( 'Edit a payment plan' ) : translate( 'Add a new payment plan' ) }
 			</FormSectionHeading>
 			<SectionNav
 				className="memberships__dialog-nav"
