@@ -152,7 +152,7 @@ const Home: FunctionComponent< ConnectedProps > = ( {
 					},
 			  }
 			: {
-					text: translate( 'Collect Payments' ),
+					text: translate( 'Collect payments' ),
 					action: () => {
 						trackCtaButton( 'recurring-payments' );
 						page( `/earn/payments/${ selectedSiteSlug }` );

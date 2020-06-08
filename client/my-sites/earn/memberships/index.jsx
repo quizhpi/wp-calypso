@@ -294,7 +294,7 @@ class MembershipsSection extends Component {
 				<CompactCard href={ '/earn/payments-plans/' + this.props.siteSlug }>
 					<QueryMembershipProducts siteId={ this.props.siteId } />
 					<div className="memberships__module-products-title">
-						{ this.props.translate( 'Payment products' ) }
+						{ this.props.translate( 'Payment plans' ) }
 					</div>
 					<div className="memberships__module-products-list">
 						<Gridicon icon="tag" size={ 12 } className="memberships__module-products-list-icon" />
@@ -436,7 +436,7 @@ class MembershipsSection extends Component {
 						status="is-success"
 						showDismiss={ false }
 						text={ this.props.translate(
-							'Congrats! Your site is now connected to Stripe. You can now add your first product.'
+							'Congrats! Your site is now connected to Stripe. You can now add your first payment plan.'
 						) }
 					>
 						<NoticeAction href={ `/earn/payments-plans/${ this.props.siteSlug }` } icon="create">
@@ -491,7 +491,7 @@ class MembershipsSection extends Component {
 					<div className="memberships__onboarding-benefits">
 						<div>
 							<Gridicon size={ 18 } icon="checkmark" />
-							{ this.props.translate( 'Add multiple products' ) }
+							{ this.props.translate( 'Add multiple payment plans' ) }
 						</div>
 						<div>
 							<Gridicon size={ 18 } icon="checkmark" />
