@@ -440,7 +440,7 @@ class MembershipsSection extends Component {
 						) }
 					>
 						<NoticeAction href={ `/earn/payments-plans/${ this.props.siteSlug }` } icon="create">
-							{ this.props.translate( 'Add a Product' ) }
+							{ this.props.translate( 'Add a payment plan' ) }
 						</NoticeAction>
 					</Notice>
 				) }
