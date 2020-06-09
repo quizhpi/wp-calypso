@@ -96,7 +96,6 @@ import { AUTO_RENEWAL } from 'lib/url/support';
 import { useLocalizedMoment } from 'components/localized-moment';
 import isDomainOnlySite from 'state/selectors/is-domain-only-site';
 import { retrieveSignupDestination, clearSignupDestinationCookie } from 'signup/utils';
-import { CalypsoI18nProvider } from 'components/calypso-i18n';
 
 const debug = debugFactory( 'calypso:composite-checkout' );
 
@@ -503,7 +502,7 @@ export default function CompositeCheckout( {
 	);
 
 	return (
-		<CalypsoI18nProvider>
+		<React.Fragment>
 			<PageViewTracker path={ analyticsPath } title="Checkout" properties={ analyticsProps } />
 			<CheckoutProvider
 				items={ itemsForCheckout }
@@ -545,7 +544,7 @@ export default function CompositeCheckout( {
 					isWhiteGloveOffer={ isWhiteGloveOffer }
 				/>
 			</CheckoutProvider>
-		</CalypsoI18nProvider>
+		</React.Fragment>
 	);
 }
 
