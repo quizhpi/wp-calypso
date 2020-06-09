@@ -405,12 +405,6 @@ export default function CompositeCheckout( {
 
 		return (
 			<React.Fragment>
-				<QuerySitePlans siteId={ siteId } />
-				<QueryPlans />
-				<QueryProducts />
-				<QueryContactDetailsCache />
-				<QueryStoredCards />
-
 				<ManagedContactDetailsFormFields
 					needsOnlyGoogleAppsDetails={ needsOnlyGoogleAppsDetails }
 					contactDetails={ contactDetails }
@@ -503,6 +497,12 @@ export default function CompositeCheckout( {
 
 	return (
 		<React.Fragment>
+			<QuerySitePlans siteId={ siteId } />
+			<QueryPlans />
+			<QueryProducts />
+			<QueryContactDetailsCache />
+			<QueryStoredCards />
+
 			<PageViewTracker path={ analyticsPath } title="Checkout" properties={ analyticsProps } />
 			<CheckoutProvider
 				items={ itemsForCheckout }
