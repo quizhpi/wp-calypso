@@ -50,6 +50,7 @@ import { retrieveMobileRedirect } from 'jetpack-connect/persistence-utils';
 import { isWooOAuth2Client } from 'lib/oauth2-clients';
 import { getCurrentOAuth2Client } from 'state/ui/oauth2-clients/selectors';
 import LayoutLoader from './loader';
+import CalypsoI18nProvider from 'components/calypso-i18n-provider';
 
 /**
  * Style dependencies
@@ -167,82 +168,84 @@ class Layout extends Component {
 		const { shouldShowAppBanner } = this.props;
 
 		return (
-			<div className={ sectionClass }>
-				<BodySectionCssClass
-					group={ this.props.sectionGroup }
-					section={ this.props.sectionName }
-					{ ...optionalBodyProps() }
-				/>
-				<HtmlIsIframeClassname />
-				<DocumentHead />
-				<QuerySites primaryAndRecent />
-				{ this.props.shouldQueryAllSites && <QuerySites allSites /> }
-				<QueryPreferences />
-				{ config.isEnabled( 'layout/query-selected-editor' ) && (
-					<QuerySiteSelectedEditor siteId={ this.props.siteId } />
-				) }
-				{ config.isEnabled( 'layout/guided-tours' ) && (
-					<AsyncLoad require="layout/guided-tours" placeholder={ null } />
-				) }
-				{ config.isEnabled( 'layout/nps-survey-notice' ) && ! isE2ETest() && (
-					<AsyncLoad require="layout/nps-survey-notice" placeholder={ null } />
-				) }
-				{ config.isEnabled( 'keyboard-shortcuts' ) ? <KeyboardShortcutsMenu /> : null }
-				{ this.renderMasterbar() }
-				{ config.isEnabled( 'support-user' ) && <SupportUser /> }
-				<LayoutLoader />
-				{ this.props.isOffline && <OfflineStatus /> }
-				<div id="content" className="layout__content">
-					{ config.isEnabled( 'jitms' ) && this.props.isEligibleForJITM && (
-						<AsyncLoad
-							require="blocks/jitm"
-							messagePath={ `calypso:${ this.props.sectionJitmPath }:admin_notices` }
-							sectionName={ this.props.sectionName }
-						/>
-					) }
-					<AsyncLoad
-						require="components/global-notices"
-						placeholder={ null }
-						id="notices"
-						notices={ notices.list }
+			<CalypsoI18nProvider>
+				<div className={ sectionClass }>
+					<BodySectionCssClass
+						group={ this.props.sectionGroup }
+						section={ this.props.sectionName }
+						{ ...optionalBodyProps() }
 					/>
-					<div id="secondary" className="layout__secondary" role="navigation">
-						{ this.props.secondary }
+					<HtmlIsIframeClassname />
+					<DocumentHead />
+					<QuerySites primaryAndRecent />
+					{ this.props.shouldQueryAllSites && <QuerySites allSites /> }
+					<QueryPreferences />
+					{ config.isEnabled( 'layout/query-selected-editor' ) && (
+						<QuerySiteSelectedEditor siteId={ this.props.siteId } />
+					) }
+					{ config.isEnabled( 'layout/guided-tours' ) && (
+						<AsyncLoad require="layout/guided-tours" placeholder={ null } />
+					) }
+					{ config.isEnabled( 'layout/nps-survey-notice' ) && ! isE2ETest() && (
+						<AsyncLoad require="layout/nps-survey-notice" placeholder={ null } />
+					) }
+					{ config.isEnabled( 'keyboard-shortcuts' ) ? <KeyboardShortcutsMenu /> : null }
+					{ this.renderMasterbar() }
+					{ config.isEnabled( 'support-user' ) && <SupportUser /> }
+					<LayoutLoader />
+					{ this.props.isOffline && <OfflineStatus /> }
+					<div id="content" className="layout__content">
+						{ config.isEnabled( 'jitms' ) && this.props.isEligibleForJITM && (
+							<AsyncLoad
+								require="blocks/jitm"
+								messagePath={ `calypso:${ this.props.sectionJitmPath }:admin_notices` }
+								sectionName={ this.props.sectionName }
+							/>
+						) }
+						<AsyncLoad
+							require="components/global-notices"
+							placeholder={ null }
+							id="notices"
+							notices={ notices.list }
+						/>
+						<div id="secondary" className="layout__secondary" role="navigation">
+							{ this.props.secondary }
+						</div>
+						<div id="primary" className="layout__primary">
+							{ this.props.primary }
+						</div>
 					</div>
-					<div id="primary" className="layout__primary">
-						{ this.props.primary }
-					</div>
+					{ config.isEnabled( 'i18n/community-translator' )
+						? isCommunityTranslatorEnabled() && (
+								<AsyncLoad require="components/community-translator" />
+						  )
+						: config( 'restricted_me_access' ) && (
+								<AsyncLoad require="layout/community-translator/launcher" placeholder={ null } />
+						  ) }
+					{ this.props.sectionGroup === 'sites' && <SitePreview /> }
+					{ config.isEnabled( 'happychat' ) && this.props.chatIsOpen && (
+						<AsyncLoad require="components/happychat" />
+					) }
+					{ 'development' === process.env.NODE_ENV && (
+						<AsyncLoad require="components/webpack-build-monitor" placeholder={ null } />
+					) }
+					{ this.shouldLoadInlineHelp() && (
+						<AsyncLoad require="blocks/inline-help" placeholder={ null } />
+					) }
+					{ config.isEnabled( 'layout/support-article-dialog' ) && (
+						<AsyncLoad require="blocks/support-article-dialog" placeholder={ null } />
+					) }
+					{ shouldShowAppBanner && config.isEnabled( 'layout/app-banner' ) && (
+						<AsyncLoad require="blocks/app-banner" placeholder={ null } />
+					) }
+					{ config.isEnabled( 'gdpr-banner' ) && (
+						<AsyncLoad require="blocks/gdpr-banner" placeholder={ null } />
+					) }
+					{ config.isEnabled( 'legal-updates-banner' ) && (
+						<AsyncLoad require="blocks/legal-updates-banner" placeholder={ null } />
+					) }
 				</div>
-				{ config.isEnabled( 'i18n/community-translator' )
-					? isCommunityTranslatorEnabled() && (
-							<AsyncLoad require="components/community-translator" />
-					  )
-					: config( 'restricted_me_access' ) && (
-							<AsyncLoad require="layout/community-translator/launcher" placeholder={ null } />
-					  ) }
-				{ this.props.sectionGroup === 'sites' && <SitePreview /> }
-				{ config.isEnabled( 'happychat' ) && this.props.chatIsOpen && (
-					<AsyncLoad require="components/happychat" />
-				) }
-				{ 'development' === process.env.NODE_ENV && (
-					<AsyncLoad require="components/webpack-build-monitor" placeholder={ null } />
-				) }
-				{ this.shouldLoadInlineHelp() && (
-					<AsyncLoad require="blocks/inline-help" placeholder={ null } />
-				) }
-				{ config.isEnabled( 'layout/support-article-dialog' ) && (
-					<AsyncLoad require="blocks/support-article-dialog" placeholder={ null } />
-				) }
-				{ shouldShowAppBanner && config.isEnabled( 'layout/app-banner' ) && (
-					<AsyncLoad require="blocks/app-banner" placeholder={ null } />
-				) }
-				{ config.isEnabled( 'gdpr-banner' ) && (
-					<AsyncLoad require="blocks/gdpr-banner" placeholder={ null } />
-				) }
-				{ config.isEnabled( 'legal-updates-banner' ) && (
-					<AsyncLoad require="blocks/legal-updates-banner" placeholder={ null } />
-				) }
-			</div>
+			</CalypsoI18nProvider>
 		);
 	}
 }
