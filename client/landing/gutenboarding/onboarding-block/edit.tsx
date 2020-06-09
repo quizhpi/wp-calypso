@@ -23,12 +23,43 @@ import { useFreeDomainSuggestion } from '../hooks/use-free-domain-suggestion';
 
 import './colors.scss';
 import './style.scss';
+import { useI18n } from '@automattic/react-i18n';
+//import type { NewSiteErrorResponse } from '@automattic/data-stores/dist/types/site';
+import Link from '../components/link';
+
+interface Props {
+	//error: NewSiteErrorResponse;
+	linkTo: string;
+}
+
+// error: Object { error: 'nondescript_internal_error', message: 'An internal error', name: 'NondescriptInternalError', status: 500, statusCode: 500 }
+const CreateSiteError: React.FunctionComponent< Props > = ( { linkTo } ) => {
+	const { __ } = useI18n();
+
+	return (
+		<div>
+			<h1>{ __( 'Error' ) }</h1>
+			<p>
+				{ __(
+					'An unexpected error occurred while creating your site, please Go Back and try again.'
+				) }
+			</p>
+			<p>{ __( 'If the problem continues please contact our support via chat or email.' ) }</p>
+			<p>
+				<Link isPrimary to={ linkTo }>
+					{ __( 'Go Back' ) }
+				</Link>
+			</p>
+		</div>
+	);
+};
 
 const OnboardingEdit: FunctionComponent< BlockEditProps< Attributes > > = () => {
 	const { selectedDesign, siteTitle } = useSelect( ( select ) => select( STORE_KEY ).getState() );
 	const { createSite } = useDispatch( STORE_KEY );
 	const isRedirecting = useSelect( ( select ) => select( STORE_KEY ).getIsRedirecting() );
 	const isCreatingSite = useSelect( ( select ) => select( SITE_STORE ).isFetchingSite() );
+	const newSiteError = useSelect( ( select ) => select( SITE_STORE ).getNewSiteError() );
 	const newSite = useSelect( ( select ) => select( SITE_STORE ).getNewSite() );
 	const currentUser = useSelect( ( select ) => select( USER_STORE ).getCurrentUser() );
 	const shouldTriggerCreate = useNewQueryParam();
@@ -88,6 +119,16 @@ const OnboardingEdit: FunctionComponent< BlockEditProps< Attributes > > = () => 
 
 	const redirectToLatestStep = <Redirect to={ getLatestStepPath() } />;
 
+	function createSiteOrError() {
+		if ( newSiteError ) {
+			return <CreateSiteError linkTo={ getLatestStepPath() } />;
+		} else if ( canUseCreateSiteStep() ) {
+			return <CreateSite />;
+		}
+
+		return redirectToLatestStep;
+	}
+
 	return (
 		<div className="onboarding-block">
 			{ isCreatingSite && (
@@ -113,9 +154,7 @@ const OnboardingEdit: FunctionComponent< BlockEditProps< Attributes > > = () => 
 					{ canUseStyleStep() ? <Plans /> : redirectToLatestStep }
 				</Route>
 
-				<Route path={ makePath( Step.CreateSite ) }>
-					{ canUseCreateSiteStep() ? <CreateSite /> : redirectToLatestStep }
-				</Route>
+				<Route path={ makePath( Step.CreateSite ) }>{ createSiteOrError() }</Route>
 			</Switch>
 		</div>
 	);
