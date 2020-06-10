@@ -26,7 +26,7 @@ import {
 	PAID_DOMAINS_TO_SHOW_WITH_CATEGORIES_MODE,
 	PAID_DOMAINS_TO_SHOW_WITHOUT_CATEGORIES_MODE,
 } from '../constants';
-
+import { DomainNameExplanationImage } from '../domain-name-explanation/';
 /**
  * Style dependencies
  */
@@ -231,52 +231,66 @@ const DomainPicker: FunctionComponent< Props > = ( {
 							value={ domainSearch }
 						/>
 					</div>
-					<div className="domain-picker__body">
-						{ showDomainCategories && (
-							<div className="domain-picker__aside">
-								<DomainCategories selected={ domainCategory } onSelect={ setDomainCategory } />
-							</div>
-						) }
-						<div className="domain-picker__suggestion-item-group">
-							{ ! freeSuggestions && <SuggestionItemPlaceholder /> }
-							{ freeSuggestions &&
-								( freeSuggestions.length ? (
-									<SuggestionItem
-										suggestion={ freeSuggestions[ 0 ] }
-										railcarId={ baseRailcarId ? `${ baseRailcarId }0` : undefined }
-										isSelected={
-											currentSelection?.domain_name === freeSuggestions[ 0 ].domain_name
-										}
-										onRender={ () =>
-											handleItemRender( freeSuggestions[ 0 ], `${ baseRailcarId }0`, 0 )
-										}
-										onSelect={ setCurrentSelection }
-									/>
-								) : (
-									<SuggestionNone />
-								) ) }
-							{ ! paidSuggestions &&
-								times( quantity, ( i ) => <SuggestionItemPlaceholder key={ i } /> ) }
-							{ paidSuggestions &&
-								( paidSuggestions?.length ? (
-									paidSuggestions.map( ( suggestion, i ) => (
+
+					{ domainSearch.trim() ? (
+						<div className="domain-picker__body">
+							{ showDomainCategories && (
+								<div className="domain-picker__aside">
+									<DomainCategories selected={ domainCategory } onSelect={ setDomainCategory } />
+								</div>
+							) }
+							<div className="domain-picker__suggestion-item-group">
+								{ ! freeSuggestions && <SuggestionItemPlaceholder /> }
+								{ freeSuggestions &&
+									( freeSuggestions.length ? (
 										<SuggestionItem
-											key={ suggestion.domain_name }
-											suggestion={ suggestion }
-											railcarId={ baseRailcarId ? `${ baseRailcarId }${ i + 1 }` : undefined }
-											isSelected={ currentSelection?.domain_name === suggestion.domain_name }
-											isRecommended={ isRecommended( suggestion ) }
+											suggestion={ freeSuggestions[ 0 ] }
+											railcarId={ baseRailcarId ? `${ baseRailcarId }0` : undefined }
+											isSelected={
+												currentSelection?.domain_name === freeSuggestions[ 0 ].domain_name
+											}
 											onRender={ () =>
-												handleItemRender( suggestion, `${ baseRailcarId }${ i + 1 }`, i + 1 )
+												handleItemRender( freeSuggestions[ 0 ], `${ baseRailcarId }0`, 0 )
 											}
 											onSelect={ setCurrentSelection }
 										/>
-									) )
-								) : (
-									<SuggestionNone />
-								) ) }
+									) : (
+										<SuggestionNone />
+									) ) }
+								{ ! paidSuggestions &&
+									times( quantity, ( i ) => <SuggestionItemPlaceholder key={ i } /> ) }
+								{ paidSuggestions &&
+									( paidSuggestions?.length ? (
+										paidSuggestions.map( ( suggestion, i ) => (
+											<SuggestionItem
+												key={ suggestion.domain_name }
+												suggestion={ suggestion }
+												railcarId={ baseRailcarId ? `${ baseRailcarId }${ i + 1 }` : undefined }
+												isSelected={ currentSelection?.domain_name === suggestion.domain_name }
+												isRecommended={ isRecommended( suggestion ) }
+												onRender={ () =>
+													handleItemRender( suggestion, `${ baseRailcarId }${ i + 1 }`, i + 1 )
+												}
+												onSelect={ setCurrentSelection }
+											/>
+										) )
+									) : (
+										<SuggestionNone />
+									) ) }
+							</div>
 						</div>
-					</div>
+					) : (
+						<div className="domain-picker__empty-state">
+							<p className="domain-picker__empty-state--text">
+								{ __(
+									'A domain name is the site address people type in their browser to visit your site.'
+								) }
+							</p>
+							<div>
+								<DomainNameExplanationImage />
+							</div>
+						</div>
+					) }
 				</PanelRow>
 				<PanelRow className="domain-picker__panel-row-footer">
 					<div className="domain-picker__footer">

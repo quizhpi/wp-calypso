@@ -26,9 +26,21 @@ $domain-picker__suggestion-item-height: 24px;
 			max-width: 100%;
 		}
 	}
-
 	@include break-small {
 		min-width: 520px;
+	}
+}
+
+.domain-picker__empty-state {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	&--text {
+		max-width: 320px;
+		font-size: 0.9em;
+		margin: 0 10px;
+		color: $dark-gray-500;
 	}
 }
 
