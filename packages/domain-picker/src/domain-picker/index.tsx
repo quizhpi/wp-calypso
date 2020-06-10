@@ -22,10 +22,7 @@ import {
 } from '../utils/domain-suggestions';
 import DomainCategories from '../domain-categories';
 import CloseButton from '../close-button';
-import {
-	PAID_DOMAINS_TO_SHOW_WITH_CATEGORIES_MODE,
-	PAID_DOMAINS_TO_SHOW_WITHOUT_CATEGORIES_MODE,
-} from '../constants';
+import { PAID_DOMAINS_TO_SHOW, PAID_DOMAINS_TO_SHOW_EXPANDED } from '../constants';
 import { DomainNameExplanationImage } from '../domain-name-explanation/';
 /**
  * Style dependencies
@@ -53,7 +50,11 @@ export interface Props {
 
 	onMoreOptions?: () => void;
 
+	/** Domain suggestions to show when the picker isn't expanded */
 	quantity?: number;
+
+	/** Domain suggestions to show when the picker is expanded */
+	quantityExpanded?: number;
 
 	currentDomain?: DomainSuggestion;
 
@@ -78,9 +79,8 @@ const DomainPicker: FunctionComponent< Props > = ( {
 	onDomainSelect,
 	onClose,
 	onMoreOptions,
-	quantity = showDomainCategories
-		? PAID_DOMAINS_TO_SHOW_WITH_CATEGORIES_MODE
-		: PAID_DOMAINS_TO_SHOW_WITHOUT_CATEGORIES_MODE,
+	quantity = PAID_DOMAINS_TO_SHOW,
+	quantityExpanded = PAID_DOMAINS_TO_SHOW_EXPANDED,
 	currentDomain,
 	analyticsFlowId,
 	analyticsUiAlgo,
@@ -92,6 +92,7 @@ const DomainPicker: FunctionComponent< Props > = ( {
 	const label = __( 'Search for a domain' );
 
 	const [ currentSelection, setCurrentSelection ] = useState( currentDomain );
+	const [ isExpanded, setIsExpanded ] = useState( false );
 
 	// keep domain query in local state to allow free editing of the input value while the modal is open
 	const [ domainSearch, setDomainSearch ] = useState< string >( initialDomainSearch );
@@ -99,14 +100,17 @@ const DomainPicker: FunctionComponent< Props > = ( {
 
 	const domainSuggestions = useDomainSuggestions(
 		domainSearch.trim(),
+		quantityExpanded,
 		domainCategory,
-		useI18n().i18nLocale,
-		quantity
+		useI18n().i18nLocale
 	);
 
 	const allSuggestions = domainSuggestions;
 	const freeSuggestions = getFreeDomainSuggestions( allSuggestions );
-	const paidSuggestions = getPaidDomainSuggestions( allSuggestions );
+	const paidSuggestions = getPaidDomainSuggestions( allSuggestions )?.slice(
+		0,
+		isExpanded ? quantityExpanded : quantity
+	);
 	const recommendedSuggestion = getRecommendedDomainSuggestion( paidSuggestions );
 	const hasSuggestions = freeSuggestions?.length || paidSuggestions?.length;
 
@@ -277,6 +281,13 @@ const DomainPicker: FunctionComponent< Props > = ( {
 									) : (
 										<SuggestionNone />
 									) ) }
+								{ ! isExpanded && (
+									<div className="domain-picker__show-more">
+										<Button onClick={ () => setIsExpanded( true ) }>
+											{ __( 'View more results' ) }
+										</Button>
+									</div>
+								) }
 							</div>
 						</div>
 					) : (

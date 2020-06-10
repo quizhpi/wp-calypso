@@ -44,9 +44,15 @@ $domain-picker__suggestion-item-height: 24px;
 	}
 }
 
+.domain-picker__show-more {
+	padding: 10px;
+	text-align: center;
+}
+
 .domain-picker__panel-row-main {
 	flex-grow: 1;
 	padding: 36px;
+	padding-bottom: 0;
 }
 
 .domain-picker__panel-row-footer {

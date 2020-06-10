@@ -71,7 +71,6 @@ const DomainPickerButton: React.FunctionComponent< Props > = ( {
 			onMoreOptions={ onClickMoreOptions }
 			showDomainConnectButton={ domainPickerMode === 'modal' }
 			onClose={ handleClose }
-			showDomainCategories={ domainPickerMode === 'modal' }
 			currentDomain={ currentDomain }
 			onDomainSelect={ onDomainSelect }
 			domainSuggestionVendor={ DOMAIN_SUGGESTION_VENDOR }
