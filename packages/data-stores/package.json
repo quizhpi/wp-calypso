@@ -32,8 +32,8 @@
 		"watch": "check-npm-client && tsc --project ./tsconfig.json --watch"
 	},
 	"dependencies": {
-		"@wordpress/data-controls": "^1.4.0",
-		"@wordpress/url": "^2.8.2",
+		"@wordpress/data-controls": "^1.13.0",
+		"@wordpress/url": "^2.15.0",
 		"fast-json-stable-stringify": "^2.1.0",
 		"i18n-calypso": "^5.0.0",
 		"qs": "^6.9.1",
