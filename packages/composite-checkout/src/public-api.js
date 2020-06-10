@@ -35,6 +35,7 @@ import {
 } from './lib/registry';
 import { createFullCreditsMethod } from './lib/payment-methods/full-credits';
 import { createFreePaymentMethod } from './lib/payment-methods/free-purchase';
+import { createIdealPaymentMethodStore, createIdealMethod } from './lib/payment-methods/ideal';
 import {
 	createStripeMethod,
 	createStripePaymentMethodStore,
@@ -80,6 +81,8 @@ export {
 	createExistingCardMethod,
 	createFreePaymentMethod,
 	createFullCreditsMethod,
+	createIdealMethod,
+	createIdealPaymentMethodStore,
 	createPayPalMethod,
 	createRegistry,
 	createStripeMethod,
