@@ -493,6 +493,7 @@ export default function CompositeCheckout( {
 			'apple-pay': applePayProcessor,
 			'free-purchase': freePurchaseProcessor,
 			card: stripeCardProcessor,
+			ideal: stripeCardProcessor,
 			'full-credits': fullCreditsProcessor,
 			'existing-card': existingCardProcessor,
 			paypal: ( transactionData ) =>
