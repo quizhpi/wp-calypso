@@ -116,7 +116,7 @@ const GSuiteNewUser: FunctionComponent< Props > = ( {
 							maxLength={ 60 }
 							isError={ hasFirstNameError }
 							onChange={ ( event: ChangeEvent< HTMLInputElement > ) => {
-								onUserValueChange( 'firstName', event.target.value );
+								onUserValueChange( 'firstName', event.target.value, mailBoxFieldTouched );
 							} }
 							onBlur={ () => {
 								setFirstNameFieldTouched( wasValidated );
