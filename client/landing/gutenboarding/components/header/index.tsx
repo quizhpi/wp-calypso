@@ -4,7 +4,7 @@
 import * as React from 'react';
 import { sprintf } from '@wordpress/i18n';
 import { useViewportMatch } from '@wordpress/compose';
-import { useI18n, withI18n, I18nReact } from '@automattic/react-i18n';
+import { useI18n } from '@automattic/react-i18n';
 import { Icon, wordpress } from '@wordpress/icons';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { useHistory } from 'react-router-dom';
@@ -31,12 +31,16 @@ import {
 import { PAID_DOMAINS_TO_SHOW } from '../../constants';
 import { usePath, useCurrentStep, Step } from '../../path';
 import { trackEventWithFlow } from '../../lib/analytics';
+import { Button } from '@wordpress/components';
 
 type DomainSuggestion = DomainSuggestions.DomainSuggestion;
 
-const Header: React.FunctionComponent = () => {
-	const { __, i18nLocale } = useI18n();
+interface Props {
+	changeLocale: ( locale: string ) => {};
+}
 
+const Header: React.FunctionComponent< Props > = ( { changeLocale } ) => {
+	const { __, i18nLocale } = useI18n();
 	const currentStep = useCurrentStep();
 
 	const newUser = useSelect( ( select ) => select( USER_STORE ).getNewUser() );
@@ -157,6 +161,17 @@ const Header: React.FunctionComponent = () => {
 		setDomain( suggestion );
 	};
 
+	// todo: just for testing purposes, replace with the actual language picker
+	const handleChangeLocale = () => {
+		if ( i18nLocale === 'en' ) {
+			push( makePath( Step[ currentStep ], 'fr' ) );
+			changeLocale( 'fr' );
+		} else {
+			push( makePath( Step[ currentStep ], 'en' ) );
+			changeLocale( 'en' );
+		}
+	};
+
 	return (
 		<div
 			className="gutenboarding__header"
@@ -172,7 +187,7 @@ const Header: React.FunctionComponent = () => {
 				</div>
 				<div className="gutenboarding__header-section-item gutenboarding__header-site-title-section">
 					<div className="gutenboarding__header-site-title">
-						{ siteTitle ? siteTitle : <StartYourWebsite /> }
+						{ siteTitle ? siteTitle : __( 'Start your website' ) }
 					</div>
 				</div>
 				<div className="gutenboarding__header-section-item gutenboarding__header-domain-section">
@@ -199,6 +214,12 @@ const Header: React.FunctionComponent = () => {
 							)
 					}
 				</div>
+				<div className="gutenboarding__header-section-item gutenboarding__header-site-language">
+					<Button onClick={ handleChangeLocale }>
+						<span>Site Language: </span>
+						<span className="gutenboarding__header-site-language-badge">{ i18nLocale }</span>
+					</Button>
+				</div>
 				<div className="gutenboarding__header-section-item gutenboarding__header-section-item--right">
 					<PlansButton />
 				</div>
@@ -207,13 +228,5 @@ const Header: React.FunctionComponent = () => {
 		</div>
 	);
 };
-
-const StartYourWebsite = withI18n(
-	class extends React.PureComponent< I18nReact > {
-		render() {
-			return this.props.__( 'Start your website' );
-		}
-	}
-);
 
 export default Header;

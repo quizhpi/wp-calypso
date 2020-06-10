@@ -25,9 +25,12 @@ import { usePageViewTracksEvents } from './hooks/use-page-view-tracks-events';
 
 registerBlockType( name, settings );
 
-export function Gutenboard() {
-	const { __ } = useI18n();
+interface Props {
+	changeLocale: ( locale: string ) => {};
+}
 
+const Gutenboard: React.FunctionComponent< Props > = ( { changeLocale } ) => {
+	const { __ } = useI18n();
 	useOnSiteCreation();
 	usePageViewTracksEvents();
 
@@ -72,7 +75,7 @@ export function Gutenboard() {
 		<div className="block-editor__container">
 			<DropZoneProvider>
 				<div className="gutenboarding__layout edit-post-layout">
-					<Header />
+					<Header changeLocale={ changeLocale } />
 					<BlockEditorProvider
 						useSubRegistry={ false }
 						value={ [ onboardingBlock.current ] }
@@ -98,4 +101,6 @@ export function Gutenboard() {
 		</div>
 	);
 	/* eslint-enable wpcalypso/jsx-classname-namespace */
-}
+};
+
+export default Gutenboard;
