@@ -110,6 +110,7 @@ const GSuiteNewUser: FunctionComponent< Props > = ( {
 				<div className="gsuite-new-user-list__new-user-name">
 					<div className="gsuite-new-user-list__new-user-name-container">
 						<FormTextInput
+							autoFocus
 							placeholder={ translate( 'First name' ) }
 							value={ firstName }
 							maxLength={ 60 }
