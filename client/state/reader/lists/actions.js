@@ -14,6 +14,10 @@ import {
 	READER_LIST_UPDATE_FAILURE,
 	READER_LIST_UPDATE_TITLE,
 	READER_LIST_UPDATE_DESCRIPTION,
+	READER_LIST_ITEM_ADD_FEED,
+	READER_LIST_ITEM_ADD_FEED_RECEIVE,
+	READER_LIST_ITEM_ADD_TAG,
+	READER_LIST_ITEM_ADD_TAG_RECEIVE,
 	READER_LISTS_RECEIVE,
 	READER_LISTS_REQUEST,
 	READER_LISTS_REQUEST_SUCCESS,
@@ -297,6 +301,53 @@ export const receiveReaderListItems = ( listId, listItems ) => ( {
 	listId,
 	listItems,
 } );
+
+export const addReaderListFeed = ( listOwner, listSlug, feedId ) => ( {
+	type: READER_LIST_ITEM_ADD_FEED,
+	listOwner,
+	listSlug,
+	feedId,
+} );
+
+export const addReaderListFeedByUrl = ( listOwner, listSlug, feedUrl ) => ( {
+	type: READER_LIST_ITEM_ADD_FEED,
+	listOwner,
+	listSlug,
+	feedUrl,
+} );
+
+export const addReaderListSite = ( listOwner, listSlug, siteId ) => ( {
+	type: READER_LIST_ITEM_ADD_FEED,
+	listOwner,
+	listSlug,
+	siteId,
+} );
+
+export const addReaderListTag = ( listOwner, listSlug, tagSlug ) => ( {
+	type: READER_LIST_ITEM_ADD_TAG,
+	listOwner,
+	listSlug,
+	tagSlug,
+} );
+
+export function receiveAddReaderListFeed( listOwner, listSlug, feedId ) {
+	return {
+		type: READER_LIST_ITEM_ADD_FEED_RECEIVE,
+		listOwner,
+		listSlug,
+		feedId,
+	};
+}
+
+export function receiveAddReaderListTag( listOwner, listSlug, tagSlug, tagId ) {
+	return {
+		type: READER_LIST_ITEM_ADD_TAG_RECEIVE,
+		listOwner,
+		listSlug,
+		tagSlug,
+		tagId,
+	};
+}
 
 function createQuery( owner, slug ) {
 	const preparedOwner = decodeURIComponent( owner );
